@@ -1,0 +1,654 @@
+provider "aws" {
+  region = "eu-west-1"
+}
+
+locals {
+  name = "complete-${basename(path.cwd)}"
+
+  tags = {
+    Example     = local.name
+    Environment = "dev"
+    Terraform   = "true"
+  }
+}
+
+################################################################################
+# WAF v2 Web ACL - Complete
+################################################################################
+
+module "wafv2" {
+  source = "../.."
+
+  name        = local.name
+  description = "Complete WAF v2 Web ACL example"
+  scope       = "REGIONAL"
+
+  default_action = "allow"
+
+  # Custom response bodies used by rules
+  custom_response_bodies = {
+    blocked_response = {
+      content      = "{\"error\": \"Request blocked by WAF\"}"
+      content_type = "APPLICATION_JSON"
+    }
+  }
+
+  # CAPTCHA configuration
+  captcha_config = {
+    immunity_time_property = {
+      immunity_time = 300
+    }
+  }
+
+  rules = {
+    # AWS Managed Rule Groups
+    common-rule-set = {
+      priority        = 1
+      override_action = "none"
+
+      statement = {
+        managed_rule_group_statement = {
+          name        = "AWSManagedRulesCommonRuleSet"
+          vendor_name = "AWS"
+        }
+      }
+    }
+
+    sqli-rule-set = {
+      priority        = 2
+      override_action = "none"
+
+      statement = {
+        managed_rule_group_statement = {
+          name        = "AWSManagedRulesSQLiRuleSet"
+          vendor_name = "AWS"
+        }
+      }
+    }
+
+    known-bad-inputs = {
+      priority        = 3
+      override_action = "none"
+
+      statement = {
+        managed_rule_group_statement = {
+          name        = "AWSManagedRulesKnownBadInputsRuleSet"
+          vendor_name = "AWS"
+        }
+      }
+    }
+
+    # Managed rule group with scope_down_statement using regex_match_statement
+    # Excludes specific URI paths from the admin protection rule set
+    admin-protection-scoped = {
+      priority        = 4
+      override_action = "none"
+
+      statement = {
+        managed_rule_group_statement = {
+          name        = "AWSManagedRulesAdminProtectionRuleSet"
+          vendor_name = "AWS"
+
+          scope_down_statement = {
+            regex_match_statement = {
+              regex_string = "^/admin/.*"
+              field_to_match = {
+                uri_path = {}
+              }
+              text_transformations = [
+                {
+                  priority = 0
+                  type     = "LOWERCASE"
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+
+    # Managed rule group with scope_down_statement using not_statement
+    # Applies the common rule set only to requests NOT matching a specific path
+    common-rules-scoped = {
+      priority        = 5
+      override_action = "none"
+
+      statement = {
+        managed_rule_group_statement = {
+          name        = "AWSManagedRulesCommonRuleSet"
+          vendor_name = "AWS"
+
+          scope_down_statement = {
+            not_statement = {
+              statement = {
+                byte_match_statement = {
+                  positional_constraint = "STARTS_WITH"
+                  search_string         = "/api/health"
+                  field_to_match = {
+                    uri_path = {}
+                  }
+                  text_transformations = [
+                    {
+                      priority = 0
+                      type     = "LOWERCASE"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    # Managed rule group with scope_down_statement using and_statement
+    # Applies the common rule set only to requests matching a specific path AND a http method POST
+    common-rules-scoped-with-and = {
+      priority        = 6
+      override_action = "none"
+
+      statement = {
+        managed_rule_group_statement = {
+          name        = "AWSManagedRulesCommonRuleSet"
+          vendor_name = "AWS"
+
+          scope_down_statement = {
+            and_statement = {
+              statements = [
+                {
+                  byte_match_statement = {
+                    positional_constraint = "STARTS_WITH"
+                    search_string         = "/login"
+                    field_to_match = {
+                      uri_path = {}
+                    }
+                    text_transformations = [
+                      {
+                        priority = 0
+                        type     = "LOWERCASE"
+                      }
+                    ]
+                  }
+                },
+                {
+                  byte_match_statement = {
+                    positional_constraint = "EXACTLY"
+                    search_string         = "POST"
+                    field_to_match = {
+                      method = {}
+                    }
+                    text_transformations = [
+                      {
+                        priority = 0
+                        type     = "NONE"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+
+    # Managed rule group with scope_down_statement using or_statement
+    # Applies the common rule set only to requests matching a specific path OR a specific body
+    common-rules-scoped-with-or = {
+      priority        = 7
+      override_action = "none"
+
+      statement = {
+        managed_rule_group_statement = {
+          name        = "AWSManagedRulesCommonRuleSet"
+          vendor_name = "AWS"
+
+          scope_down_statement = {
+            or_statement = {
+              statements = [
+                {
+                  byte_match_statement = {
+                    positional_constraint = "STARTS_WITH"
+                    search_string         = "/login"
+                    field_to_match = {
+                      uri_path = {}
+                    }
+                    text_transformations = [
+                      {
+                        priority = 0
+                        type     = "LOWERCASE"
+                      }
+                    ]
+                  }
+                },
+                {
+                  byte_match_statement = {
+                    positional_constraint = "EXACTLY"
+                    search_string         = "action: login"
+                    field_to_match = {
+                      body = {
+                        oversize_handling = "CONTINUE"
+                      }
+                    }
+                    text_transformations = [
+                      {
+                        priority = 0
+                        type     = "NONE"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+
+    # IP set reference rule
+    block-bad-ips = {
+      priority = 10
+      action   = "block"
+
+      statement = {
+        ip_set_reference_statement = {
+          arn = module.ip_set.arn
+        }
+      }
+    }
+
+    # Geo match rule - block specific countries
+    geo-block = {
+      priority = 20
+      action = {
+        block = {
+          custom_response = {
+            response_code            = 403
+            custom_response_body_key = "blocked_response"
+          }
+        }
+      }
+
+      statement = {
+        geo_match_statement = {
+          country_codes = ["RU", "CN"]
+        }
+      }
+    }
+
+    # Rate-based rule
+    rate-limit = {
+      priority = 30
+      action   = "block"
+
+      statement = {
+        rate_based_statement = {
+          limit                 = 1000
+          aggregate_key_type    = "IP"
+          evaluation_window_sec = 300
+        }
+      }
+    }
+
+    # Rate-based rule with compound scope_down_statement.
+    # Rate-limits only login POSTs to /login (URI AND method match).
+    rate-limit-login-scoped = {
+      priority = 31
+      action   = "block"
+
+      statement = {
+        rate_based_statement = {
+          limit                 = 100
+          aggregate_key_type    = "IP"
+          evaluation_window_sec = 300
+
+          scope_down_statement = {
+            and_statement = {
+              statements = [
+                {
+                  byte_match_statement = {
+                    positional_constraint = "STARTS_WITH"
+                    search_string         = "/login"
+                    field_to_match = {
+                      uri_path = {}
+                    }
+                    text_transformations = [
+                      {
+                        priority = 0
+                        type     = "LOWERCASE"
+                      }
+                    ]
+                  }
+                },
+                {
+                  byte_match_statement = {
+                    positional_constraint = "EXACTLY"
+                    search_string         = "POST"
+                    field_to_match = {
+                      method = {}
+                    }
+                    text_transformations = [
+                      {
+                        priority = 0
+                        type     = "NONE"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+
+    # Byte match rule - block requests without specific header
+    require-api-key = {
+      priority = 40
+      action   = "block"
+
+      statement = {
+        byte_match_statement = {
+          positional_constraint = "EXACTLY"
+          search_string         = "valid-api-key"
+          field_to_match = {
+            single_header = {
+              name = "x-api-key"
+            }
+          }
+          text_transformations = [
+            {
+              priority = 0
+              type     = "NONE"
+            }
+          ]
+        }
+      }
+    }
+
+    # Size constraint rule
+    limit-body-size = {
+      priority = 50
+      action   = "block"
+
+      statement = {
+        size_constraint_statement = {
+          comparison_operator = "GT"
+          size                = 8192
+          field_to_match = {
+            body = {
+              oversize_handling = "MATCH"
+            }
+          }
+          text_transformations = [
+            {
+              priority = 0
+              type     = "NONE"
+            }
+          ]
+        }
+      }
+    }
+
+    # Nested compound: AND containing an OR among its child statements.
+    # Demonstrates the L2 OR-inside-AND path together with the byte_match
+    # `body` field-target — both shipped in this PR.
+    nested-compound-demo = {
+      priority = 60
+      action   = "block"
+
+      statement = {
+        and_statement = {
+          statements = [
+            {
+              geo_match_statement = {
+                country_codes = ["US"]
+              }
+            },
+            {
+              or_statement = {
+                statements = [
+                  {
+                    byte_match_statement = {
+                      positional_constraint = "CONTAINS"
+                      search_string         = "DROP TABLE"
+                      field_to_match = {
+                        body = {
+                          oversize_handling = "MATCH"
+                        }
+                      }
+                      text_transformations = [
+                        {
+                          priority = 0
+                          type     = "LOWERCASE"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    ip_set_reference_statement = {
+                      arn = module.ip_set.arn
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    }
+
+    # ASN match — block requests originating from a specific Autonomous System
+    block-asn = {
+      priority = 70
+      action   = "block"
+
+      statement = {
+        asn_match_statement = {
+          asn_list = [12389, 65535]
+        }
+      }
+    }
+
+    # Byte match using uri_fragment + ja4_fingerprint
+    block-by-uri-fragment-and-ja4 = {
+      priority = 71
+      action   = "block"
+
+      statement = {
+        and_statement = {
+          statements = [
+            {
+              byte_match_statement = {
+                positional_constraint = "CONTAINS"
+                search_string         = "debug"
+                field_to_match = {
+                  uri_fragment = {
+                    fallback_behavior = "MATCH"
+                  }
+                }
+                text_transformations = [
+                  {
+                    priority = 0
+                    type     = "LOWERCASE"
+                  }
+                ]
+              }
+            },
+            {
+              byte_match_statement = {
+                positional_constraint = "STARTS_WITH"
+                search_string         = "abc123"
+                field_to_match = {
+                  ja4_fingerprint = {
+                    fallback_behavior = "NO_MATCH"
+                  }
+                }
+                text_transformations = [
+                  {
+                    priority = 0
+                    type     = "NONE"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    }
+
+    # Rate-based with JA3 fingerprint as a custom aggregate key
+    rate-by-ja3 = {
+      priority = 72
+      action   = "block"
+
+      statement = {
+        rate_based_statement = {
+          limit                 = 200
+          aggregate_key_type    = "CUSTOM_KEYS"
+          evaluation_window_sec = 300
+
+          custom_keys = [
+            {
+              ja3_fingerprint = {
+                fallback_behavior = "NO_MATCH"
+              }
+            },
+            {
+              header = {
+                name = "x-client-id"
+                text_transformations = [
+                  {
+                    priority = 0
+                    type     = "NONE"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    }
+
+    # Anti-DDoS managed rule group
+    aws-anti-ddos = {
+      priority        = 73
+      override_action = "none"
+
+      statement = {
+        managed_rule_group_statement = {
+          name        = "AWSManagedRulesAntiDDoSRuleSet"
+          vendor_name = "AWS"
+
+          managed_rule_group_configs = [
+            {
+              aws_managed_rules_anti_ddos_rule_set = {
+                sensitivity_to_block = "MEDIUM"
+                client_side_action_config = {
+                  challenge = {
+                    usage_of_action = "ENABLED"
+                    sensitivity     = "HIGH"
+                    exempt_uri_regular_expression = [
+                      {
+                        regex_string = "^/health$"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+
+  # Data protection — hash Authorization headers in logs / metrics / sampled requests
+  data_protection_config = {
+    data_protections = [
+      {
+        action = "HASH"
+        field = {
+          field_keys = ["authorization"]
+          field_type = "SINGLE_HEADER"
+        }
+        exclude_rate_based_details = false
+        exclude_rule_match_details = false
+      }
+    ]
+  }
+
+  # Inline logging configuration
+  create_logging_configuration    = true
+  logging_log_destination_configs = [aws_cloudwatch_log_group.waf.arn]
+
+  logging_redacted_fields = [
+    {
+      single_header = {
+        name = "authorization"
+      }
+    }
+  ]
+
+  logging_filter = {
+    default_behavior = "KEEP"
+    filters = [
+      {
+        behavior    = "DROP"
+        requirement = "MEETS_ALL"
+        conditions = [
+          {
+            action_condition = {
+              action = "ALLOW"
+            }
+          }
+        ]
+      }
+    ]
+  }
+
+  tags = local.tags
+}
+
+################################################################################
+# WAF v2 Web ACL - Disabled
+################################################################################
+
+module "disabled" {
+  source = "../.."
+
+  create = false
+
+  name  = "disabled-${local.name}"
+  scope = "REGIONAL"
+}
+
+################################################################################
+# IP Set (Submodule)
+################################################################################
+
+module "ip_set" {
+  source = "../../modules/ip-set"
+
+  name               = "${local.name}-blocked-ips"
+  scope              = "REGIONAL"
+  ip_address_version = "IPV4"
+
+  addresses = [
+    "198.51.100.0/24",
+    "203.0.113.0/24",
+  ]
+
+  tags = local.tags
+}
+
+################################################################################
+# Supporting Resources
+################################################################################
+
+resource "aws_cloudwatch_log_group" "waf" {
+  name              = "aws-waf-logs-${local.name}"
+  retention_in_days = 7
+
+  tags = local.tags
+}
