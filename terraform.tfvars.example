@@ -1,7 +1,7 @@
-default_service_name = "platform-prototype-ecommerce"
+default_service_name = "platform-prototype"
 
 container_services = {
-  platform-prototype-ecommerce = {
+  platform-prototype = {
     image             = "502867101295.dkr.ecr.sa-east-1.amazonaws.com/platform-prototype:latest"
     container_port    = 3000
     desired_count     = 1

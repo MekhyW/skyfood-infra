@@ -14,6 +14,7 @@ The `modules` directory contains a collection of reusable Terraform modules base
 ## Deploy
 
 ```bash
+aws login
 cp terraform.tfvars.example terraform.tfvars
 terraform init
 terraform plan
