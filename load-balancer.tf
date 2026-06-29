@@ -1,5 +1,5 @@
 module "alb" {
-  source = "../../modules/load-balancer"
+  source = "./modules/load-balancer"
 
   name               = local.name
   tags               = local.tags
@@ -30,8 +30,8 @@ module "alb" {
     http = {
       port     = 80
       protocol = "HTTP"
-      forward = {target_group_key = local.default_service_name}
-      rules = local.service_rules
+      forward  = { target_group_key = local.default_service_name }
+      rules    = local.service_rules
     }
   }
 

@@ -1,6 +1,6 @@
 module "ecs_cluster" {
-  source = "../../modules/container-service/modules/cluster"
-  name = "${local.name}-cluster"
+  source                                 = "./modules/container-service/modules/cluster"
+  name                                   = "${local.name}-cluster"
   create_cloudwatch_log_group            = true
   cloudwatch_log_group_name              = "/aws/ecs/${local.name}"
   cloudwatch_log_group_retention_in_days = 14
@@ -14,18 +14,15 @@ module "ecs_cluster" {
 }
 
 module "ecs_service" {
-  source = "../../modules/container-service/modules/service"
+  source = "./modules/container-service/modules/service"
 
-  for_each = var.container_services
-
-  name        = each.key
-  cluster_arn = module.ecs_cluster.arn
-  tags        = merge(local.tags, {Service = each.key})
-
-  cpu           = each.value.cpu
-  memory        = each.value.memory
-  desired_count = each.value.desired_count
-
+  for_each                          = var.container_services
+  name                              = each.key
+  cluster_arn                       = module.ecs_cluster.arn
+  tags                              = merge(local.tags, { Service = each.key })
+  cpu                               = each.value.cpu
+  memory                            = each.value.memory
+  desired_count                     = each.value.desired_count
   launch_type                       = "FARGATE"
   requires_compatibilities          = ["FARGATE"]
   network_mode                      = "awsvpc"
@@ -45,7 +42,6 @@ module "ecs_service" {
     (each.key) = {
       image     = each.value.image
       essential = true
-
       portMappings = [
         {
           name          = each.key
@@ -54,21 +50,18 @@ module "ecs_service" {
           protocol      = "tcp"
         }
       ]
-
       environment = [
         for name, value in each.value.environment : {
           name  = name
           value = value
         }
       ]
-
       secrets = [
         for name, value_from in each.value.secrets : {
           name      = name
           valueFrom = value_from
         }
       ]
-
       enable_cloudwatch_logging              = true
       create_cloudwatch_log_group            = true
       cloudwatch_log_group_name              = "/aws/ecs/${local.name}/${each.key}"
