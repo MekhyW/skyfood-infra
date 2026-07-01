@@ -9,5 +9,6 @@ container_services = {
     memory            = 512
     health_check_path = "/"
     path_patterns     = ["/*"]
+    enable_execute_command = true
   }
 }

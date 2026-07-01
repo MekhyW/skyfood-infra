@@ -491,6 +491,12 @@ resource "aws_iam_role_policy_attachment" "task" {
   policy_arn = aws_iam_policy.task[0].arn
 }
 
+resource "aws_iam_role_policy_attachment" "task_ssm" {
+  count      = local.create_task_iam_role ? 1 : 0
+  role       = aws_iam_role.task[0].name
+  policy_arn = "arn:${local.partition}:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
+
 resource "aws_iam_role_policy_attachment" "task_additional" {
   for_each = { for k, v in var.task_iam_role_policies : k => v if local.create_task_iam_role }
 
