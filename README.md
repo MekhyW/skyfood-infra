@@ -21,6 +21,13 @@ terraform plan
 terraform apply
 ```
 
+## Destroy
+
+```bash
+aws login
+terraform destroy
+```
+
 The shared ALB DNS name is available from the `alb_dns_name` output. To add more services later, add entries to `container_services` in the same environment tfvars file.
 
 ## Related Repositories
