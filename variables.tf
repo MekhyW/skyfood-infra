@@ -54,3 +54,33 @@ variable "default_service_name" {
   type        = string
   default     = null
 }
+
+variable "netbird_setup_key" {
+  description = "Netbird setup key used to auto-enroll the EC2 gateway into the Netbird network."
+  type        = string
+  sensitive   = true
+}
+
+variable "netbird_management_url" {
+  description = "Netbird management server URL."
+  type        = string
+  default     = "https://api.netbird.io"
+}
+
+variable "netbird_advertise_routes" {
+  description = "CIDR routes the gateway advertises to all Netbird peers. Defaults to 0.0.0.0/0 so the EC2 acts as a catch-all gateway for robot traffic."
+  type        = string
+  default     = "0.0.0.0/0"
+}
+
+variable "netbird_gateway_instance_type" {
+  description = "EC2 instance type for the Netbird gateway."
+  type        = string
+  default     = "t3.micro"
+}
+
+variable "netbird_gateway_key_name" {
+  description = "Optional EC2 key pair name for SSH access to the gateway. Leave null to rely on SSM Session Manager only."
+  type        = string
+  default     = null
+}

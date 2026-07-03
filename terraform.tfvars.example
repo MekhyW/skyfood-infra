@@ -12,3 +12,6 @@ container_services = {
     enable_execute_command = true
   }
 }
+
+# Netbird gateway (EC2 peer that bridges AWS ↔ robot LAN)
+netbird_setup_key = "REPLACE-WITH-YOUR-NETBIRD-SETUP-KEY"
