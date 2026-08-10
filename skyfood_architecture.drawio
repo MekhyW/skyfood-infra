@@ -1,10 +1,10 @@
 <mxfile host="65bd71144e">
     <diagram id="skyfood-architecture" name="Skyfood Architecture">
-        <mxGraphModel dx="1587" dy="1140" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="750" math="0" shadow="0">
+        <mxGraphModel dx="571" dy="488" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="750" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
-                <mxCell id="3" value="" style="ellipse;whiteSpace=wrap;html=1;fontSize=18;fontColor=#ffffff;fillColor=#3472BF;strokeColor=#3472BF;fillStyle=hatch;" vertex="1" parent="1">
+                <mxCell id="3" value="" style="ellipse;whiteSpace=wrap;html=1;fontSize=18;fontColor=#ffffff;fillColor=#3472BF;strokeColor=#3472BF;fillStyle=hatch;" parent="1" vertex="1">
                     <mxGeometry x="261.5" y="15" width="383" height="295" as="geometry"/>
                 </mxCell>
                 <mxCell id="mobile" value="MOBILE APP (TS)" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=1.5;fontSize=20;" parent="1" vertex="1">
@@ -66,13 +66,13 @@
                 <mxCell id="e8" value="tunneled OPC-UA" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;fontColor=#ff0000;fontSize=12;" parent="1" source="integrator" target="elevators" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="e9" value="MQTT" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;fontColor=#ff0000;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;" parent="1" source="integrator" target="doors" edge="1">
+                <mxCell id="e9" value="MQTT (HiveMQ)" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;fontColor=#ff0000;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;" parent="1" source="integrator" target="doors" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="e10" value="yodeck API" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;fontColor=#ff0000;fontSize=12;" parent="1" source="media" target="robots" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="4" value="Managed by&lt;br&gt;AlphaCode" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=18;fontColor=#3472BF;" vertex="1" parent="1">
+                <mxCell id="4" value="Managed by&lt;br&gt;AlphaCode" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=18;fontColor=#3472BF;" parent="1" vertex="1">
                     <mxGeometry x="594" y="242.5" width="117" height="55" as="geometry"/>
                 </mxCell>
             </root>
