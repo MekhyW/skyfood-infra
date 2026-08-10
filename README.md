@@ -37,5 +37,6 @@ The shared ALB DNS name is available from the `alb_dns_name` output. To add more
 | `platform-core`                | Core marketplace and delivery platform           |
 | `platform-mobile-app`          | Ionic mobile application and Progressive Web App |
 | `platform-elevator-integrator` | .NET service for elevator system integration     |
+| `platform-mission-planner`     | Robot server and multi-step mission planner      |
 | `platform-media-panel`         | Advertising management platform                  |
 | `platform-prototype-ecommerce` | Mock demo e-commerce app and admin panel         |
