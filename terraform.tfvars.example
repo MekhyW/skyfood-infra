@@ -15,3 +15,6 @@ container_services = {
 
 # Netbird gateway (EC2 peer that bridges AWS ↔ robot LAN)
 netbird_setup_key = "REPLACE-WITH-YOUR-NETBIRD-SETUP-KEY"
+
+# Elevator Integrator (Windows EC2 running Softing OPC Suite + .NET service)
+elevator_integrator_netbird_setup_key = "REPLACE-WITH-ELEVATOR-INTEGRATOR-NETBIRD-SETUP-KEY"

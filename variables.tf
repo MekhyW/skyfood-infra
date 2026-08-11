@@ -76,11 +76,30 @@ variable "netbird_advertise_routes" {
 variable "netbird_gateway_instance_type" {
   description = "EC2 instance type for the Netbird gateway."
   type        = string
-  default     = "t3.micro"
+  default     = "t3.nano"
 }
 
 variable "netbird_gateway_key_name" {
   description = "Optional EC2 key pair name for SSH access to the gateway. Leave null to rely on SSM Session Manager only."
   type        = string
+  default     = null
+}
+
+variable "elevator_integrator_instance_type" {
+  description = "EC2 instance type for the elevator integrator Windows host. t3.medium is the minimum comfortable size for Windows Server + Softing OPC Suite."
+  type        = string
+  default     = "t3.medium"
+}
+
+variable "elevator_integrator_key_name" {
+  description = "Optional EC2 key pair name. Used to decrypt the Windows Administrator password in the AWS console."
+  type        = string
+  default     = null
+}
+
+variable "elevator_integrator_netbird_setup_key" {
+  description = "Netbird setup key to auto-enroll the elevator integrator host into the Netbird network."
+  type        = string
+  sensitive   = true
   default     = null
 }

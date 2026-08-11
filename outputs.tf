@@ -34,3 +34,18 @@ output "netbird_gateway_private_ip" {
   description = "Private IP of the Netbird gateway within the VPC."
   value       = module.netbird_gateway.private_ip
 }
+
+output "elevator_integrator_instance_id" {
+  description = "EC2 instance ID of the elevator integrator Windows host."
+  value       = module.elevator_integrator.instance_id
+}
+
+output "elevator_integrator_public_ip" {
+  description = "Public IP of the elevator integrator host. Use for RDP or Netbird peer reference."
+  value       = module.elevator_integrator.public_ip
+}
+
+output "elevator_integrator_private_ip" {
+  description = "Private IP of the elevator integrator host within the VPC."
+  value       = module.elevator_integrator.private_ip
+}
