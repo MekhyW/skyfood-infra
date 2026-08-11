@@ -37,15 +37,16 @@ variable "public_subnets" {
 variable "container_services" {
   description = "Container services deployed to the shared ECS cluster and ALB."
   type = map(object({
-    image             = string
-    container_port    = optional(number, 3000)
-    cpu               = optional(number, 256)
-    memory            = optional(number, 512)
-    desired_count     = optional(number, 1)
-    health_check_path = optional(string, "/")
-    path_patterns     = optional(list(string), ["/*"])
-    environment       = optional(map(string), {})
-    secrets           = optional(map(string), {})
+    image                  = string
+    container_port         = optional(number, 3000)
+    cpu                    = optional(number, 256)
+    memory                 = optional(number, 512)
+    desired_count          = optional(number, 1)
+    health_check_path      = optional(string, "/")
+    path_patterns          = optional(list(string), ["/*"])
+    environment            = optional(map(string), {})
+    secrets                = optional(map(string), {})
+    enable_execute_command = optional(bool, false)
   }))
 }
 

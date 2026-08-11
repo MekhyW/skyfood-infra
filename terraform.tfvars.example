@@ -2,14 +2,35 @@ default_service_name = "platform-prototype"
 
 container_services = {
   platform-prototype = {
-    image             = "502867101295.dkr.ecr.sa-east-1.amazonaws.com/platform-prototype:latest"
-    container_port    = 3000
-    desired_count     = 1
-    cpu               = 256
-    memory            = 512
-    health_check_path = "/"
-    path_patterns     = ["/*"]
+    image                  = "502867101295.dkr.ecr.sa-east-1.amazonaws.com/platform-prototype:latest"
+    container_port         = 3000
+    desired_count          = 1
+    cpu                    = 256
+    memory                 = 512
+    health_check_path      = "/"
+    path_patterns          = ["/*"]
     enable_execute_command = true
+  }
+
+  platform-mission-planner = {
+    image                  = "502867101295.dkr.ecr.sa-east-1.amazonaws.com/robot-server-mission-planner:latest"
+    container_port         = 3001
+    desired_count          = 1
+    cpu                    = 256
+    memory                 = 512
+    health_check_path      = "/health"
+    path_patterns          = ["/robot/*", "/robots/*", "/ws/*"] # All /robot/* and /ws/* traffic is routed to this service
+    enable_execute_command = true
+    environment = {
+      NODE_ENV = "production"
+      PORT     = "3001"
+      TZ       = "America/Sao_Paulo"
+    }
+    secrets = {
+      # Create these secrets in AWS Secrets Manager or SSM Parameter Store before applying (aws secretsmanager create-secret --name skyfood/mission-planner/APP_ID --secret-string "<value>")
+      APP_ID     = "arn:aws:secretsmanager:sa-east-1:502867101295:secret:skyfood/mission-planner/APP_ID-XXXXXX"
+      APP_SECRET = "arn:aws:secretsmanager:sa-east-1:502867101295:secret:skyfood/mission-planner/APP_SECRET-XXXXXX"
+    }
   }
 }
 

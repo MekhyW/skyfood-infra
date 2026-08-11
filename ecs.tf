@@ -23,6 +23,7 @@ module "ecs_service" {
   cpu                               = each.value.cpu
   memory                            = each.value.memory
   desired_count                     = each.value.desired_count
+  enable_execute_command            = each.value.enable_execute_command
   launch_type                       = "FARGATE"
   requires_compatibilities          = ["FARGATE"]
   network_mode                      = "awsvpc"
