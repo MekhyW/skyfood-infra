@@ -1,44 +1,44 @@
 <mxfile host="65bd71144e">
     <diagram id="skyfood-architecture" name="Skyfood Architecture">
-        <mxGraphModel dx="571" dy="488" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="750" math="0" shadow="0">
+        <mxGraphModel dx="1973" dy="1244" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="750" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
                 <mxCell id="3" value="" style="ellipse;whiteSpace=wrap;html=1;fontSize=18;fontColor=#ffffff;fillColor=#3472BF;strokeColor=#3472BF;fillStyle=hatch;" parent="1" vertex="1">
-                    <mxGeometry x="261.5" y="15" width="383" height="295" as="geometry"/>
+                    <mxGeometry x="247.5" y="47" width="383" height="295" as="geometry"/>
                 </mxCell>
                 <mxCell id="mobile" value="MOBILE APP (TS)" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=1.5;fontSize=20;" parent="1" vertex="1">
-                    <mxGeometry x="324" y="78" width="258" height="62" as="geometry"/>
+                    <mxGeometry x="327" y="110" width="221" height="62" as="geometry"/>
                 </mxCell>
                 <mxCell id="media" value="MEDIA PANEL (TS)" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=1.5;fontSize=20;" parent="1" vertex="1">
-                    <mxGeometry x="854.5" y="82" width="265" height="62" as="geometry"/>
+                    <mxGeometry x="840.5" y="114" width="265" height="62" as="geometry"/>
                 </mxCell>
                 <mxCell id="core" value="CORE (PHP)" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=1.5;fontSize=20;" parent="1" vertex="1">
-                    <mxGeometry x="355.5" y="194" width="195" height="62" as="geometry"/>
+                    <mxGeometry x="330" y="226" width="217" height="62" as="geometry"/>
                 </mxCell>
                 <mxCell id="robotserver" value="ROBOT SERVER (JS)" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=1.5;fontSize=20;" parent="1" vertex="1">
-                    <mxGeometry x="312" y="398" width="282" height="62" as="geometry"/>
+                    <mxGeometry x="298" y="430" width="282" height="62" as="geometry"/>
                 </mxCell>
                 <mxCell id="integrator" value="ELEVATOR INTEGRATOR (.NET)" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=1.5;fontSize=20;" parent="1" vertex="1">
-                    <mxGeometry x="235.5" y="543" width="435" height="66" as="geometry"/>
+                    <mxGeometry x="276" y="575" width="327" height="66" as="geometry"/>
                 </mxCell>
                 <mxCell id="robots" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;robots&lt;br&gt;(V1 --&amp;gt; ROS Noetic + Android app)&lt;br&gt;V2 --&amp;gt; ROS 2 Humble)&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=1.5;fontSize=16;" parent="1" vertex="1">
-                    <mxGeometry x="836" y="378" width="302" height="102" as="geometry"/>
+                    <mxGeometry x="822" y="410" width="302" height="102" as="geometry"/>
                 </mxCell>
                 <mxCell id="elevators" value="elevators (MikroTik hEX)" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=1.5;fontSize=18;" parent="1" vertex="1">
-                    <mxGeometry x="837" y="555" width="220" height="42" as="geometry"/>
+                    <mxGeometry x="823" y="587" width="220" height="42" as="geometry"/>
                 </mxCell>
                 <mxCell id="doors" value="automatic doors (ESP32)" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=1.5;fontSize=18;" parent="1" vertex="1">
-                    <mxGeometry x="836" y="630" width="223" height="42" as="geometry"/>
+                    <mxGeometry x="822" y="662" width="223" height="42" as="geometry"/>
                 </mxCell>
                 <mxCell id="client" value="client" style="strokeColor=none;fillColor=none;fontSize=20;" parent="1" vertex="1">
-                    <mxGeometry x="56" y="91.5" width="115" height="35" as="geometry"/>
+                    <mxGeometry x="42" y="123.5" width="115" height="35" as="geometry"/>
                 </mxCell>
                 <mxCell id="announcer" value="announcer" style="strokeColor=none;fillColor=none;fontSize=20;" parent="1" vertex="1">
-                    <mxGeometry x="1262" y="95.5" width="125" height="35" as="geometry"/>
+                    <mxGeometry x="1248" y="127.5" width="125" height="35" as="geometry"/>
                 </mxCell>
                 <mxCell id="shopkeeper" value="shopkeeper" style="strokeColor=none;fillColor=none;fontSize=20;" parent="1" vertex="1">
-                    <mxGeometry x="41" y="207.5" width="130" height="35" as="geometry"/>
+                    <mxGeometry x="27" y="239.5" width="130" height="35" as="geometry"/>
                 </mxCell>
                 <mxCell id="e1" value="NATIVE" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;fontColor=#ff0000;fontSize=12;" parent="1" source="client" target="mobile" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
@@ -73,7 +73,28 @@
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="4" value="Managed by&lt;br&gt;AlphaCode" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=18;fontColor=#3472BF;" parent="1" vertex="1">
-                    <mxGeometry x="594" y="242.5" width="117" height="55" as="geometry"/>
+                    <mxGeometry x="580" y="274.5" width="117" height="55" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" value="admin" style="strokeColor=none;fillColor=none;fontSize=20;" vertex="1" parent="1">
+                    <mxGeometry x="42" y="443.5" width="118" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" value="HTTPS" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;fontColor=#ff0000;fontSize=12;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="5" target="robotserver">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="166.99999999999977" y="267" as="sourcePoint"/>
+                        <mxPoint x="351.5" y="267" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="8" value="HTTPS" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;fontColor=#ff0000;fontSize=12;entryX=0.25;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="5" target="core">
+                    <mxGeometry x="0.038" relative="1" as="geometry">
+                        <mxPoint x="176.99999999999977" y="277" as="sourcePoint"/>
+                        <mxPoint x="361.5" y="277" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="101" y="356"/>
+                            <mxPoint x="384" y="356"/>
+                            <mxPoint x="384" y="288"/>
+                        </Array>
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
                 </mxCell>
             </root>
         </mxGraphModel>
