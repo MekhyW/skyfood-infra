@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="skyfood-architecture" name="Skyfood Architecture">
-        <mxGraphModel dx="1297" dy="1052" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="750" math="0" shadow="0">
+        <mxGraphModel dx="903" dy="684" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="750" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -13,25 +13,25 @@
                 <mxCell id="media" value="MEDIA PANEL (TS)" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=1.5;fontSize=20;" parent="1" vertex="1">
                     <mxGeometry x="840.5" y="101" width="265" height="62" as="geometry"/>
                 </mxCell>
-                <mxCell id="13" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="core" target="12">
+                <mxCell id="13" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=1;entryDx=0;entryDy=0;" parent="1" source="core" target="12" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="core" value="CORE (PHP)" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=1.5;fontSize=20;" parent="1" vertex="1">
                     <mxGeometry x="330" y="213" width="192" height="62" as="geometry"/>
                 </mxCell>
-                <mxCell id="17" style="edgeStyle=none;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="robotserver" target="14">
+                <mxCell id="17" style="edgeStyle=none;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=0;" parent="1" source="robotserver" target="14" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="robotserver" value="ROBOT SERVER (JS)" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=1.5;fontSize=20;" parent="1" vertex="1">
                     <mxGeometry x="285" y="417" width="282" height="62" as="geometry"/>
                 </mxCell>
-                <mxCell id="18" style="edgeStyle=none;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="integrator" target="14">
+                <mxCell id="18" style="edgeStyle=none;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=1;entryDx=0;entryDy=0;" parent="1" source="integrator" target="14" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="integrator" value="ELEVATOR INTEGRATOR (.NET)" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=1.5;fontSize=20;" parent="1" vertex="1">
                     <mxGeometry x="262.5" y="587" width="327" height="66" as="geometry"/>
                 </mxCell>
-                <mxCell id="22" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="robots" target="20">
+                <mxCell id="22" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=1;entryDx=0;entryDy=0;" parent="1" source="robots" target="20" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="robots" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;robots&lt;br&gt;(V1 --&amp;gt; ROS Noetic + Android app)&lt;br&gt;V2 --&amp;gt; ROS 2 Humble)&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=1.5;fontSize=16;" parent="1" vertex="1">
@@ -75,7 +75,7 @@
                 <mxCell id="e7" value="gRPC" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;fontColor=#ff0000;fontSize=12;" parent="1" source="robotserver" target="integrator" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="e8" value="tunneled OPC-UA" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;fontColor=#ff0000;fontSize=12;" parent="1" source="integrator" target="elevators" edge="1">
+                <mxCell id="e8" value="tunneled OPC-UA&lt;br&gt;tunneled Modbus" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;fontColor=#ff0000;fontSize=12;" parent="1" source="integrator" target="elevators" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="e9" value="MQTT (HiveMQ)" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;fontColor=#ff0000;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;" parent="1" source="integrator" target="doors" edge="1">
@@ -119,13 +119,13 @@
                         <mxPoint as="offset"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="12" value="Marketplace DB" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="12" value="Marketplace DB" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="532" y="157" width="80" height="80" as="geometry"/>
                 </mxCell>
-                <mxCell id="14" value="Facilities DB" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="14" value="Facilities DB" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="509.5" y="493" width="80" height="80" as="geometry"/>
                 </mxCell>
-                <mxCell id="20" value="Maps DB" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="20" value="Maps DB" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="1137" y="350.5" width="80" height="80" as="geometry"/>
                 </mxCell>
             </root>
